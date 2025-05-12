@@ -1,7 +1,6 @@
 package com.example.icecream.repository;
 
-import com.example.icecream.entity.Flavor;
-import com.example.icecream.entity.Purchase;
+import com.example.icecream.model.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

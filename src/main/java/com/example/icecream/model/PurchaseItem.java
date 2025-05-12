@@ -1,9 +1,8 @@
-package com.example.icecream.entity;
+package com.example.icecream.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity

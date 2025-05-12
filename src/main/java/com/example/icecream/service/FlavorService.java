@@ -1,6 +1,6 @@
 package com.example.icecream.service;
 
-import com.example.icecream.entity.Flavor;
+import com.example.icecream.model.Flavor;
 import com.example.icecream.repository.FlavorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

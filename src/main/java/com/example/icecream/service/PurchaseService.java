@@ -1,6 +1,6 @@
 package com.example.icecream.service;
 
-import com.example.icecream.entity.Purchase;
+import com.example.icecream.model.Purchase;
 import com.example.icecream.repository.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +39,7 @@ public class PurchaseService {
     public List<Purchase> getPurchasesByCreatedAt(LocalDateTime createdAt) {
         return purchaseRepository.findByCreatedAt(createdAt);
     }
+    //TODO: Implement method to get purchases by date range
+
 }
 

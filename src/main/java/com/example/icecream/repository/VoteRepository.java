@@ -1,6 +1,6 @@
 package com.example.icecream.repository;
 
-import com.example.icecream.entity.Vote;
+import com.example.icecream.model.Vote;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.data.jpa.repository.JpaRepository;

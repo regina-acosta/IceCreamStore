@@ -1,7 +1,6 @@
 package com.example.icecream.service;
 
-import com.example.icecream.entity.MonthlyMenuItem;
-import com.example.icecream.entity.PurchaseItem;
+import com.example.icecream.model.PurchaseItem;
 import com.example.icecream.repository.PurchaseItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

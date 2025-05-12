@@ -1,6 +1,6 @@
 package com.example.icecream.repository;
 
-import com.example.icecream.entity.Customer;
+import com.example.icecream.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

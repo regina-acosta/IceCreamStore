@@ -1,4 +1,4 @@
-package com.example.icecream.entity;
+package com.example.icecream.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
