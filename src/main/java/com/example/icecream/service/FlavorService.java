@@ -13,6 +13,7 @@ import java.util.UUID;
 @Service
 public class FlavorService {
 
+    private static final long MAX_FLAVORS = 125;
     private final FlavorRepository flavorRepository;
 
     @Autowired
@@ -37,6 +38,10 @@ public class FlavorService {
     }
 
     public Flavor saveFlavor(Flavor flavor) {
+        long flavorCount = flavorRepository.countByStatus(FlavorStatus.ACTIVE);
+        if (flavorCount >= MAX_FLAVORS) {
+            throw new IllegalStateException("Cannot add more than " + MAX_FLAVORS + " flavors.");
+        }
         return flavorRepository.save(flavor);
     }
 

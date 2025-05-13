@@ -10,9 +10,10 @@ import java.util.UUID;
 
 public interface FlavorRepository extends JpaRepository<Flavor, UUID> {
 
-    public Optional<Flavor> findById(UUID id);
-    public List<Flavor> findAll();
-    public Optional<Flavor> findByFlavorName(String flavorName);
-    public List<Flavor> findByStatus(FlavorStatus status);
+     Optional<Flavor> findById(UUID id);
+     List<Flavor> findAll();
+     Optional<Flavor> findByFlavorName(String flavorName);
+     List<Flavor> findByStatus(FlavorStatus status);
 
+    long countByStatus(FlavorStatus flavorStatus);
 }
