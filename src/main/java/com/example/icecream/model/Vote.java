@@ -86,4 +86,5 @@ public class Vote {
     public void setVoteYear(int voteYear) {
         this.voteYear = voteYear;
     }
+
 }

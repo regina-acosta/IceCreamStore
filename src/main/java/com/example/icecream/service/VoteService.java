@@ -33,7 +33,7 @@ public class VoteService {
         return voteRepository.findAll();
     }
 
-    public Optional<Vote> getVoteByCustomerId(UUID customerId) {
+    public Optional<Vote> getVotesByCustomerId(UUID customerId) {
         return voteRepository.findByCustomer_Id(customerId);
     }
 
