@@ -6,6 +6,7 @@ import com.example.icecream.model.Flavor;
 import com.example.icecream.model.Vote;
 import com.example.icecream.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.Max;
@@ -104,7 +105,18 @@ public class VoteService {
      * @return list of Object[]: [flavorId, flavorName, voteCount]
      */
     public List<Object[]> getVoteCountsByFlavor(int voteMonth, int voteYear) {
-        return voteRepository.countVotesByFlavor_Id(voteMonth, voteYear);
+        return voteRepository.findVoteCountByFlavorIds(voteMonth, voteYear);
+    }
+
+    public List<Object[]> calculateFlavorsVoteCount() {
+        LocalDate currentDate = LocalDate.now();
+        int previousMonth = currentDate.minusMonths(1).getMonthValue();
+        int voteYear = LocalDate.now().getYear();
+        // If the previous month is December, we need to adjust the year
+        if (previousMonth == 12) {
+            voteYear--;
+        }
+        return voteRepository.findVoteCountByFlavorIds(previousMonth, voteYear);
     }
 }
 

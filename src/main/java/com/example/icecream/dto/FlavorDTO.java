@@ -10,6 +10,7 @@ public class FlavorDTO {
     private String name;
     private FlavorStatus status;
     private String description;
+    private Double unitPrice;
 
     // Constructors
     public FlavorDTO() {}
@@ -21,6 +22,7 @@ public class FlavorDTO {
         this.id = id;
         this.name = name;
         this.status = status;
+        this.unitPrice = unitPrice;
         this.description = description;
     }
 
@@ -40,11 +42,20 @@ public class FlavorDTO {
     public void setName(String name) {
         this.name = name;
     }
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
 
     @Override
     public String toString() {
         return "FlavorDTO{" +
                 "id=" + id +
+                ", unitPrice=" + unitPrice +
+                ", status=" + status +
+                ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
@@ -56,6 +67,7 @@ public class FlavorDTO {
         dto.setFlavorName(flavor.getFlavorName());
         dto.setDescription(flavor.getDescription());
         dto.setStatus(flavor.getStatus());
+        dto.setUnitPrice(flavor.getUnitPrice());
         return dto;
     }
 
@@ -76,5 +88,16 @@ public class FlavorDTO {
     public String getDescription() {
         return description;
     }
+    public String getFlavorName() {
+        return name;
+    }
+
+    public void setFlavor(Flavor flavor) {
+        this.name = flavor.getFlavorName();
+        this.status = flavor.getStatus();
+        this.description = flavor.getDescription();
+        this.unitPrice = flavor.getUnitPrice();
+    }
+
 }
 

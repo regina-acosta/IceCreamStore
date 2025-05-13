@@ -1,23 +1,22 @@
 package com.example.icecream.dto;
 
-import com.example.icecream.model.Flavor;
-import com.example.icecream.model.MonthlyMenuItem;
+import com.example.icecream.model.MenuItem;
 
 import java.util.UUID;
 
-public class MonthlyMenuItemDTO {
+public class MenuItemDTO {
 
     private UUID id;
     private int month;
     private int year;
-    private long unitPrice;
-    private int rankScore;
+    private Double unitPrice;
+    private Double rankScore;
     private FlavorDTO flavor;
 
-    public MonthlyMenuItemDTO() {
+    public MenuItemDTO() {
     }
 
-    public MonthlyMenuItemDTO(UUID id, FlavorDTO flavor, int month) {
+    public MenuItemDTO(UUID id, FlavorDTO flavor, int month) {
         this.id = id;
         this.flavor = flavor;
         this.month = month;
@@ -57,8 +56,8 @@ public class MonthlyMenuItemDTO {
 
     // --- Mapping Methods ---
 
-    public static MonthlyMenuItemDTO fromEntity(MonthlyMenuItem entity) {
-        MonthlyMenuItemDTO dto = new MonthlyMenuItemDTO();
+    public static MenuItemDTO fromEntity(MenuItem entity) {
+        MenuItemDTO dto = new MenuItemDTO();
         dto.setId(entity.getId());
         dto.setMonth(entity.getMonth());
         dto.setYear(entity.getYear());
@@ -68,22 +67,22 @@ public class MonthlyMenuItemDTO {
         return dto;
     }
 
-    private void setRankScore(int rankScore) {
+    private void setRankScore(Double rankScore) {
         this.rankScore = rankScore;
     }
 
-    private void setUnitPrice(long unitPrice) {
+    private void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public long getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
-    public int getRankScore() {
+    public Double getRankScore() {
         return rankScore;
     }
-    public MonthlyMenuItem toEntity() {
-        MonthlyMenuItem entity = new MonthlyMenuItem();
+    public MenuItem toEntity() {
+        MenuItem entity = new MenuItem();
         entity.setId(this.id);
         entity.setMonth(this.month);
         entity.setYear(this.year);

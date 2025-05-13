@@ -32,7 +32,7 @@ public class FlavorController {
             String flavorName,
             String description) {}
     @PostMapping
-    public ResponseEntity<Flavor> createFlavor(@Valid @RequestBody CreateFlavorPayload payload) {
+    public ResponseEntity<?> createFlavor(@Valid @RequestBody CreateFlavorPayload payload) {
         try {
             var newFlavor = new Flavor();
             newFlavor.setFlavorName(payload.flavorName());
@@ -41,7 +41,7 @@ public class FlavorController {
             Flavor savedFlavor = flavorService.saveFlavor(newFlavor);
             return new ResponseEntity<>(savedFlavor, HttpStatus.CREATED);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

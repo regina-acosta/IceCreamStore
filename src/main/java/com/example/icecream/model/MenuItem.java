@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "monthly_menu_item", uniqueConstraints = {
+@Table(name = "menu_item", uniqueConstraints = {
 @UniqueConstraint(columnNames = {"flavor_id", "menu_month", "menu_year"})
 })
-public class MonthlyMenuItem {
+public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -29,12 +29,12 @@ public class MonthlyMenuItem {
     private Flavor flavor;
 
     @Column(name = "unit_price", nullable = false)
-    private long unitPrice;
+    private Double unitPrice;
 
-    @Min(value = 1)
-    @Max(value = 125)
+    @Min(value = 0)
+    @Max(value = 1)
     @Column(name = "rank_score", nullable = false)
-    private int rankScore;
+    private Double rankScore;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -74,18 +74,18 @@ public class MonthlyMenuItem {
         this.flavor = flavor;
     }
 
-    public long getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
 
     }
 
-    public void setUnitPrice(long unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
-    public int getRankScore() {
+    public Double getRankScore() {
         return rankScore;
     }
-    public void setRankScore(int rankScore) {
+    public void setRankScore(Double rankScore) {
         this.rankScore = rankScore;
     }
     public LocalDateTime getCreatedAt() {

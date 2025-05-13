@@ -14,11 +14,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PurchaseService {
@@ -94,7 +92,34 @@ public class PurchaseService {
 
         return purchase;
     }
-    //TODO: Implement method to get purchases by date range
 
+    public Map<UUID, Integer> calculatePurchaseCountsByFlavor() {
+        // Get the current date
+        LocalDateTime today = LocalDateTime.now();
+
+        // Calculate the first day of the last month
+        LocalDateTime firstDayOfLastMonth = today.minusMonths(1).withDayOfMonth(1);
+
+        // Calculate the last day of the last month
+        LocalDateTime lastDayOfLastMonth = today.withDayOfMonth(1).minusDays(1);
+        // Fetch purchases made in the last month
+        List<Purchase> purchases = purchaseRepository.findByCreatedAtBetween(firstDayOfLastMonth, lastDayOfLastMonth);
+
+        // Create a map to store the total quantity for each flavor
+        Map<UUID, Integer> purchaseCounts = new HashMap<>();
+
+        // Iterate through the purchases and calculate the total quantity per flavor
+        for (Purchase purchase : purchases) {
+            for(PurchaseItem item : purchase.getPurchaseItems()) {
+                UUID flavorId = item.getFlavor().getId();
+                int quantity = item.getQuantity();
+
+                // Add to the total purchase count for this flavor
+                purchaseCounts.put(flavorId, purchaseCounts.getOrDefault(flavorId, 0) + quantity);
+            }
+        }
+
+        return purchaseCounts;
+    }
 }
 

@@ -20,6 +20,9 @@ public class Flavor {
     @Enumerated(EnumType.STRING)
     private FlavorStatus status;
 
+    @Column(name = "unit_price", nullable = false)
+    private Double unitPrice;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -58,5 +61,14 @@ public class Flavor {
     }
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

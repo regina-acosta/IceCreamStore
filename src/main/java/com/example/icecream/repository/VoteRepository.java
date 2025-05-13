@@ -3,6 +3,7 @@ package com.example.icecream.repository;
 import com.example.icecream.model.Vote;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,10 +28,11 @@ public interface VoteRepository extends JpaRepository<Vote, UUID> {
     public List<Vote> findByVoteYear(int voteYear);
     public List<Vote> findByVoteMonthAndVoteYear(@Min(value = 1) @Max(value = 12) int voteMonth, int voteYear);
 
-    @Query("SELECT v.flavor.id, v.flavor.flavorName, COUNT(v) " +
+    @Query("SELECT v.flavor.id, v.flavor.flavorName, COUNT(v) AS total_votes " +
             "FROM Vote v " +
             "WHERE v.voteMonth = :month AND v.voteYear = :year " +
-            "GROUP BY v.flavor.flavorName " +
+            "GROUP BY v.flavor.id " +
             "ORDER BY COUNT(v) DESC")
-    List<Object[]> countVotesByFlavor_Id(@Param("month") int month, @Param("year") int year);
+    List<Object[]> findVoteCountByFlavorIds(@Param("month") int month, @Param("year") int year);
+
 }
