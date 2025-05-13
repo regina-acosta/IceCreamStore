@@ -2,13 +2,8 @@ package com.example.icecream.controller;
 
 import com.example.icecream.dto.TopFlavorDTO;
 import com.example.icecream.dto.VoteDTO;
-import com.example.icecream.model.Customer;
-import com.example.icecream.model.Flavor;
-import com.example.icecream.model.MonthlyMenuItem;
 import com.example.icecream.model.Vote;
-import com.example.icecream.service.CustomerService;
-import com.example.icecream.service.FlavorService;
-import com.example.icecream.service.MonthlyMenuItemService;
+
 import com.example.icecream.service.VoteService;
 
 import jakarta.validation.Valid;
@@ -19,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,34 +23,17 @@ import java.util.stream.Collectors;
 public class VoteController {
 
     private final VoteService voteService;
-    private final CustomerService customerService;
-    private final MonthlyMenuItemService monthlyMenuItemService;
-    private final FlavorService flavorService;
+
 
     @Autowired
-    public VoteController(VoteService voteService, CustomerService customerService, MonthlyMenuItemService monthlyMenuItemService, FlavorService flavorService) {
+    public VoteController(VoteService voteService) {
         this.voteService = voteService;
-        this.customerService = customerService;
-        this.monthlyMenuItemService = monthlyMenuItemService;
-        this.flavorService = flavorService;
     }
 
     @PostMapping
     public ResponseEntity<?> castVote(@Valid @RequestBody VoteDTO voteDTO) {
         try {
-            Customer customer = customerService.getCustomerById(voteDTO.getCustomerId())
-                    .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-
-            Flavor flavor = flavorService.getFlavorById(voteDTO.getFlavorId())
-                    .orElseThrow(() -> new IllegalArgumentException("Flavor not found"));
-
-            Vote vote = new Vote();
-            vote.setCustomer(customer);
-            vote.setFlavor(flavor);
-            vote.setVoteMonth(LocalDate.now().getMonthValue());
-            vote.setVoteYear(LocalDate.now().getYear());
-
-            Vote savedVote = voteService.saveVote(vote);
+            Vote savedVote = voteService.saveVote(voteDTO);
 
             VoteDTO savedDTO = toDTO(savedVote);
             return ResponseEntity.ok(savedDTO);

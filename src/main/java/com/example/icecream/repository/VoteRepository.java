@@ -15,10 +15,11 @@ public interface VoteRepository extends JpaRepository<Vote, UUID> {
 
     public Optional<Vote> findById(UUID id);
     public List<Vote> findAll();
-    public Optional<Vote> findByCustomer_Id(UUID id);
+    public List<Vote> findByCustomer_Id(UUID id);
+    public List<Vote> findByCustomer_Name(String customerName);
+    // find votes customer id for the current month and year
+    List<Vote> findByCustomer_IdAndVoteMonthAndVoteYear(UUID customerId, @Min(value = 1) @Max(value = 12) int voteMonth, int voteYear);
 
-    Optional<Vote> findByCustomer_IdAndVoteMonthAndVoteYear(UUID customerId, @Min(value = 1) @Max(value = 12) int voteMonth, int voteYear);
-    public Optional<Vote> findByCustomer_Name(String customerName);
     public List<Vote> findByFlavor_FlavorName(String flavorFlavorName);
     public List<Vote> findByFlavor_Id(UUID id);
 

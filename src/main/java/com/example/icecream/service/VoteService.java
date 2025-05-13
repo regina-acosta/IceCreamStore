@@ -1,5 +1,8 @@
 package com.example.icecream.service;
 
+import com.example.icecream.dto.VoteDTO;
+import com.example.icecream.model.Customer;
+import com.example.icecream.model.Flavor;
 import com.example.icecream.model.Vote;
 import com.example.icecream.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,13 +20,37 @@ import java.util.UUID;
 public class VoteService {
 
     private final VoteRepository voteRepository;
+    private final FlavorService flavorService;
+    private final CustomerService customerService;
 
     @Autowired
-    public VoteService(VoteRepository voteRepository) {
+    public VoteService(VoteRepository voteRepository, FlavorService flavorService, CustomerService customerService) {
         this.voteRepository = voteRepository;
+        this.customerService = customerService;
+        this.flavorService = flavorService;
     }
 
-    public Vote saveVote(Vote vote) {
+    public Vote saveVote(VoteDTO voteDTO) {
+        int voteMonth = LocalDate.now().getMonthValue();
+        int voteYear = LocalDate.now().getYear();
+        int voteCount = getVoteCountByCustomerIdAndMonthAndYear(voteDTO.getCustomerId(), voteMonth, voteYear);
+
+        if (voteCount >= 5) {
+            throw new IllegalArgumentException("Customer has already voted " + voteCount + " times this month.");
+        }
+
+        Customer customer = customerService.getCustomerById(voteDTO.getCustomerId())
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        Flavor flavor = flavorService.getFlavorById(voteDTO.getFlavorId())
+                .orElseThrow(() -> new IllegalArgumentException("Flavor not found"));
+
+        Vote vote = new Vote();
+        vote.setCustomer(customer);
+        vote.setFlavor(flavor);
+        vote.setVoteMonth(voteMonth);
+        vote.setVoteYear(voteYear);
+
         return voteRepository.save(vote);
     }
 
@@ -33,15 +62,17 @@ public class VoteService {
         return voteRepository.findAll();
     }
 
-    public Optional<Vote> getVotesByCustomerId(UUID customerId) {
+    public List<Vote> getVotesByCustomerId(UUID customerId) {
         return voteRepository.findByCustomer_Id(customerId);
     }
 
-    public Optional<Vote> getVoteByCustomerIdAndMonthAndYear(UUID customerId, int voteMonth, int voteYear) {
-        return voteRepository.findByCustomer_IdAndVoteMonthAndVoteYear(customerId, voteMonth, voteYear);
+    public int getVoteCountByCustomerIdAndMonthAndYear(UUID customerId, int voteMonth, int voteYear) {
+
+        List<Vote> votes  = voteRepository.findByCustomer_IdAndVoteMonthAndVoteYear(customerId, voteMonth, voteYear);
+        return votes.size();
     }
 
-    public Optional<Vote> getVoteByCustomerName(String customerName) {
+    public List<Vote> getVotesByCustomerName(String customerName) {
         return voteRepository.findByCustomer_Name(customerName);
     }
 
