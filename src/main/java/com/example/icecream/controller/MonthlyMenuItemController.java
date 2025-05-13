@@ -1,8 +1,14 @@
 package com.example.icecream.controller;
 
+import com.example.icecream.model.Flavor;
 import com.example.icecream.model.MonthlyMenuItem;
+import com.example.icecream.repository.FlavorRepository;
 import com.example.icecream.service.MonthlyMenuItemService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +20,8 @@ import java.util.UUID;
 public class MonthlyMenuItemController {
 
     private final MonthlyMenuItemService monthlyMenuItemService;
+    @Autowired
+    private FlavorRepository flavorRepository;
 
     @Autowired
     public MonthlyMenuItemController(MonthlyMenuItemService monthlyMenuItemService) {
@@ -66,10 +74,27 @@ public class MonthlyMenuItemController {
         return monthlyMenuItemService.getMenuItemsByMonthYearAndRankRange(month, year, min, max);
     }
 
+    // Create a new menu item
+    record CreateMenuItemPayload(
+            @NotEmpty(message = "Flavor name is required")
+            String flavorId,
+            long unitPrice,
+            int rankScore,
+            int menuMonth,
+            int menuYear) {}
     @PostMapping
-    public ResponseEntity<MonthlyMenuItem> saveMenuItem(@RequestBody MonthlyMenuItem item) {
+    public ResponseEntity<MonthlyMenuItem> saveMenuItem(@Valid @RequestBody CreateMenuItemPayload payload) {
+        Flavor flavor = flavorRepository.findById(UUID.fromString(payload.flavorId()))
+                .orElseThrow(() -> new EntityNotFoundException("Flavor not found"));
+        MonthlyMenuItem item = new MonthlyMenuItem();
+        item.setFlavor(flavor);
+        item.setYear(payload.menuYear());
+        item.setMonth(payload.menuMonth());
+        item.setRankScore(payload.rankScore());
+        item.setUnitPrice(payload.unitPrice());
+
         MonthlyMenuItem savedItem = monthlyMenuItemService.saveMenuItem(item);
-        return ResponseEntity.ok(savedItem);
+        return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 }
 

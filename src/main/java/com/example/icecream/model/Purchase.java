@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,24 +21,20 @@ public class Purchase {
     @JoinColumn(name = "customer_id", nullable = false) // Many purchases for one customer
     private Customer customer;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Min(value = 0)
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
-    public Purchase() {
-        this.createdAt = LocalDateTime.now();
-        this.id = UUID.randomUUID();
-    }
+    @OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PurchaseItem> purchaseItems = new ArrayList<>();
 
-    public Purchase(double price, Customer Customer) {
-        this();
-        this.totalPrice = price;
+    // PrePersist for Timestamps
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.customer = customer;
-
     }
 
     // Getters and Setters
@@ -59,8 +57,21 @@ public class Purchase {
     public Customer getCustomer() {
         return customer;
     }
-
+    public void addPurchaseItem(PurchaseItem item) {
+        item.setPurchase(this); // Set the purchase reference in the item
+        this.purchaseItems.add(item);
+    }
+    public List<PurchaseItem> getPurchaseItems() {
+        return purchaseItems;
+    }
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void setCreatedAt(LocalDateTime now) {
+    }
+
+    public void setPurchaseItems(List<PurchaseItem> items) {
+        this.purchaseItems = items;
     }
 }

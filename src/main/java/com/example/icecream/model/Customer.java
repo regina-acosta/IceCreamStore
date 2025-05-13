@@ -21,24 +21,13 @@ public class Customer {
     @Column(unique = true, length = 15)
     private String phoneNumber;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Customer(String name, String email) {
-        this();
-        this.name = name;
-        this.email = email;
-    }
-    public Customer(String name, String email, String phoneNumber) {
-        this();
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Customer() {
+    // PrePersist for Timestamps
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.id = UUID.randomUUID();
     }
 
     // getters

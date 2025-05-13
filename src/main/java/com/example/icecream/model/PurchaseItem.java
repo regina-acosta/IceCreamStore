@@ -1,8 +1,10 @@
 package com.example.icecream.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,8 +16,12 @@ public class PurchaseItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id", nullable = false)
+    @JsonIgnore // To prevent serialization of the entire Purchase object
     private Purchase purchase;
 
     @ManyToOne(fetch = FetchType.LAZY) // many purchase items can have the same flavor
@@ -29,17 +35,11 @@ public class PurchaseItem {
     @Column(name = "unit_price", nullable = false)
     private double unitPrice;
 
-    public PurchaseItem() {
-        this.id = UUID.randomUUID();
+    // PrePersist for Timestamps
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
-    public PurchaseItem(Purchase purchase, Flavor flavor, int quantity, double unitPrice) {
-        this();
-        this.purchase = purchase;
-        this.flavor = flavor;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
-    }
-
     // Getters and Setters
     public UUID getId() {
         return id;
@@ -76,6 +76,10 @@ public class PurchaseItem {
 
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
 }

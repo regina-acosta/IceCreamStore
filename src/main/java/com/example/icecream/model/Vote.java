@@ -36,16 +36,9 @@ public class Vote {
     @Column(name = "vote_year", nullable = false)
     private int voteYear;
 
-    public Vote() {
-        this.id = UUID.randomUUID();
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-    }
-    public Vote(Customer customer, Flavor flavor, int voteMonth, int voteYear) {
-        this();
-        this.customer = customer;
-        this.flavor = flavor;
-        this.voteMonth = voteMonth;
-        this.voteYear = voteYear;
     }
 
     // Getters and setters

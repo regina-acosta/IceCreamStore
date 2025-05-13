@@ -2,6 +2,7 @@ package com.example.icecream.service;
 
 import com.example.icecream.model.Flavor;
 import com.example.icecream.repository.FlavorRepository;
+import com.example.icecream.util.FlavorStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class FlavorService {
         return flavorRepository.findByFlavorName(flavorName);
     }
 
-    public List<Flavor> getFlavorsByStatus(String status) {
+    public List<Flavor> getFlavorsByStatus(FlavorStatus status) {
         return flavorRepository.findByStatus(status);
     }
 

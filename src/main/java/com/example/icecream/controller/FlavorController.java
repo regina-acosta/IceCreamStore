@@ -1,8 +1,14 @@
 package com.example.icecream.controller;
 
+import com.example.icecream.model.Customer;
 import com.example.icecream.model.Flavor;
 import com.example.icecream.service.FlavorService;
+import com.example.icecream.util.FlavorStatus;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +26,20 @@ public class FlavorController {
         this.flavorService = flavorService;
     }
 
+    // Create a new falvor
+    record CreateFlavorPayload(
+            @NotEmpty(message = "Flavor name is required")
+            String flavorName,
+            String description) {}
     @PostMapping
-    public ResponseEntity<Flavor> createFlavor(@RequestBody Flavor flavor) {
+    public ResponseEntity<Flavor> createFlavor(@Valid @RequestBody CreateFlavorPayload payload) {
         try {
-            Flavor savedFlavor = flavorService.saveFlavor(flavor);
-            return ResponseEntity.ok(savedFlavor);
+            var newFlavor = new Flavor();
+            newFlavor.setFlavorName(payload.flavorName());
+            newFlavor.setDescription(payload.description());
+
+            Flavor savedFlavor = flavorService.saveFlavor(newFlavor);
+            return new ResponseEntity<>(savedFlavor, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -50,7 +65,7 @@ public class FlavorController {
     }
 
     @GetMapping("/status/{status}")
-    public List<Flavor> getFlavorsByStatus(@PathVariable String status) {
+    public List<Flavor> getFlavorsByStatus(@PathVariable FlavorStatus status) {
         return flavorService.getFlavorsByStatus(status);
     }
 

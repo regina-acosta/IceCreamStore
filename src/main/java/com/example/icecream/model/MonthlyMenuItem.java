@@ -36,20 +36,13 @@ public class MonthlyMenuItem {
     @Column(name = "rank_score", nullable = false)
     private int rankScore;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-
-    public MonthlyMenuItem() {
+    // PrePersist for Timestamps
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.id = UUID.randomUUID();
-    }
-
-    public MonthlyMenuItem(int month, int year, Flavor flavor) {
-        this();
-        this.menuMonth = month;
-        this.menuYear = year;
-        this.flavor = flavor;
     }
 
     public UUID getId() {
@@ -77,7 +70,7 @@ public class MonthlyMenuItem {
         return flavor;
     }
 
-    public void setFlavorId(Flavor flavor) {
+    public void setFlavor(Flavor flavor) {
         this.flavor = flavor;
     }
 

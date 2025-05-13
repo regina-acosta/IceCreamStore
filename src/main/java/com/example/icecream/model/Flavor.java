@@ -1,5 +1,6 @@
 package com.example.icecream.model;
 
+import com.example.icecream.util.FlavorStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,23 +16,18 @@ public class Flavor {
     @Column(name = "flavor_name", nullable = false, length = 100, unique = true)
     private String flavorName;
     private String description;
-    private String status;
 
-    @Column(name = "created_at")
+    @Enumerated(EnumType.STRING)
+    private FlavorStatus status;
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Flavor() {
+    // PrePersist for Timestamps
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.id = UUID.randomUUID();
-
-    }
-
-    public Flavor(String flavorName, String description, String status) {
-        this();
-        this.flavorName = flavorName;
-        this.description = description;
-        this.status = status;
-
+        this.status = FlavorStatus.ACTIVE;
     }
 
     public UUID getId() {
@@ -54,10 +50,10 @@ public class Flavor {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getStatus() {
+    public FlavorStatus getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(FlavorStatus status) {
         this.status = status;
     }
     public LocalDateTime getCreatedAt() {

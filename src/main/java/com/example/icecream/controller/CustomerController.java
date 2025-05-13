@@ -2,7 +2,11 @@ package com.example.icecream.controller;
 
 import com.example.icecream.model.Customer;
 import com.example.icecream.service.CustomerService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +24,27 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    // Create a new customer
+    record CreateCustomerPayload(
+            @NotEmpty(message = "Name is required")
+            String name,
+            @Email(message = "email is required")
+            String email,
+            String phoneNumber) {}
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<?> createCustomer(@Valid @RequestBody CreateCustomerPayload payload) {
         try {
+            var customer = new Customer();
+            customer.setName(payload.name());
+            customer.setEmail(payload.email());
+            customer.setPhoneNumber(payload.phoneNumber());
+
             Customer savedCustomer = customerService.saveCustomer(customer);
-            return ResponseEntity.ok(savedCustomer);
+            return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Error: " + e.getMessage());
         }
     }
 
