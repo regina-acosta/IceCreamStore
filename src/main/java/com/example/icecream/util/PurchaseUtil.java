@@ -18,7 +18,7 @@ public class PurchaseUtil {
                             .map(purchaseItem -> new PurchaseItemDTO(
                                     purchaseItem.getId(),
                                     purchaseItem.getCreatedAt(),
-                                    new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName()),
+                                    new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName(),purchaseItem.getFlavor().getStatus(), purchaseItem.getFlavor().getDescription()),
                                     purchaseItem.getQuantity(),
                                     purchaseItem.getUnitPrice()))
                             .collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class PurchaseUtil {
                 .map(purchaseItem -> new PurchaseItemDTO(
                         purchaseItem.getId(),
                         purchaseItem.getCreatedAt(),
-                        new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName()),
+                        new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName(),purchaseItem.getFlavor().getStatus(), purchaseItem.getFlavor().getDescription()),
                         purchaseItem.getQuantity(),
                         purchaseItem.getUnitPrice()))
                 .collect(Collectors.toList());

@@ -91,4 +91,8 @@ public class MonthlyMenuItem {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }
