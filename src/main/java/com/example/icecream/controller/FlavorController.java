@@ -31,6 +31,7 @@ public class FlavorController {
             @NotEmpty(message = "Flavor name is required")
             String flavorName,
             String description) {}
+
     @PostMapping
     public ResponseEntity<?> createFlavor(@Valid @RequestBody CreateFlavorPayload payload) {
         try {

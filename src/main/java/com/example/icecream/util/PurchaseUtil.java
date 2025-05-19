@@ -17,18 +17,16 @@ public class PurchaseUtil {
                     List<PurchaseItemDTO> purchaseItems = purchase.getPurchaseItems().stream()
                             .map(purchaseItem -> new PurchaseItemDTO(
                                     purchaseItem.getId(),
-                                    purchaseItem.getCreatedAt(),
-                                    new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName(),purchaseItem.getFlavor().getStatus(), purchaseItem.getFlavor().getDescription()),
-                                    purchaseItem.getQuantity(),
-                                    purchaseItem.getUnitPrice()))
+                                    new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName(),purchaseItem.getFlavor().getStatus(), purchaseItem.getFlavor().getUnitPrice(), purchaseItem.getFlavor().getDescription()),
+                                    purchaseItem.getQuantity()
+                                    ))
                             .collect(Collectors.toList());
 
                     return new PurchaseDTO(
                             purchase.getId(),
                             purchase.getCreatedAt(),
                             purchase.getTotalPrice(),
-                            new CustomerDTO(purchase.getCustomer().getId(), purchase.getCustomer().getName(), purchase.getCustomer().getEmail(), purchase.getCustomer().getPhoneNumber()),
-                            purchaseItems
+                            purchase.getCustomer().getId(),                            purchaseItems
                     );
                 })
                 .collect(Collectors.toList());
@@ -40,17 +38,15 @@ public class PurchaseUtil {
         List<PurchaseItemDTO> purchaseItems = purchase.getPurchaseItems().stream()
                 .map(purchaseItem -> new PurchaseItemDTO(
                         purchaseItem.getId(),
-                        purchaseItem.getCreatedAt(),
-                        new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName(),purchaseItem.getFlavor().getStatus(), purchaseItem.getFlavor().getDescription()),
-                        purchaseItem.getQuantity(),
-                        purchaseItem.getUnitPrice()))
+                        new FlavorDTO(purchaseItem.getFlavor().getId(), purchaseItem.getFlavor().getFlavorName(),purchaseItem.getFlavor().getStatus(), purchaseItem.getFlavor().getUnitPrice(),purchaseItem.getFlavor().getDescription()),
+                        purchaseItem.getQuantity()))
                 .collect(Collectors.toList());
 
         PurchaseDTO purchaseDTO = new PurchaseDTO(
                 purchase.getId(),
                 purchase.getCreatedAt(),
                 purchase.getTotalPrice(),
-                new CustomerDTO(purchase.getCustomer().getId(), purchase.getCustomer().getName(), purchase.getCustomer().getEmail(), purchase.getCustomer().getPhoneNumber()),
+                purchase.getCustomer().getId(),
                 purchaseItems
         );
 

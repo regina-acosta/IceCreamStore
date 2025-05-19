@@ -5,6 +5,7 @@ import com.example.icecream.model.Flavor;
 import com.example.icecream.model.MenuItem;
 import com.example.icecream.repository.FlavorRepository;
 import com.example.icecream.repository.MenuItemRepository;
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class MenuItemService {
     public List<MenuItem> getMenuItemsByYear(int year) {
         return monthlyMenuItemRepository.findByMenuYear(year);
     }
-
+    
     public List<MenuItem> getMenuItemsByMonthAndYear(int month, int year) {
         return monthlyMenuItemRepository.findByMenuMonthAndMenuYear(month, year);
     }
@@ -134,9 +135,14 @@ public class MenuItemService {
         // get all the flavors
         List<Flavor> allFlavors = flavorRepository.findAll();
         System.out.println("allFlavors: " + allFlavors.size());
+
         // filter out the flavors that are already in the top 5
         Set<UUID> top5FlavorIds = top5Flavors.stream()
                 .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
+        Set<UUID> lastMonthFlavorIds = lastMonthMenuItems.stream()
+                .map(menuItem -> menuItem.getFlavor().getId())
                 .collect(Collectors.toSet());
 
         List<Flavor> filteredFlavors = allFlavors.stream()
@@ -145,7 +151,7 @@ public class MenuItemService {
         System.out.println("filteredFlavors without top 5: " + filteredFlavors.size());
 
         filteredFlavors = filteredFlavors.stream()
-                .filter(flavor -> !lastMonthMenuItems.contains(flavor.getId()))
+                .filter(flavor -> !lastMonthFlavorIds.contains(flavor.getId()))
                 .collect(Collectors.toList());
         System.out.println("filteredFlavors without last month's menu items: " + filteredFlavors.size());
 
@@ -173,7 +179,7 @@ public class MenuItemService {
             MenuItemDTO savedNewItemDTO = MenuItemDTO.fromEntity(newItem);
             monthlyMenuItems.add(savedNewItemDTO);
 
-            // Remove the flavor from the filteredFlavors list so we do not added to the monthly menu again
+            // Remove the flavor from the filteredFlavors list so we do not add it to the monthly menu again
             filteredFlavors.remove(randomIndex);
         }
 

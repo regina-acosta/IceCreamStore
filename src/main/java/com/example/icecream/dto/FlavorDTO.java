@@ -18,11 +18,22 @@ public class FlavorDTO {
     public FlavorDTO(UUID id,
                      String name,
                      FlavorStatus status,
+                        Double unitPrice,
                      String description) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.unitPrice = unitPrice;
+        this.description = description;
+    }
+
+    public FlavorDTO(UUID id,
+                     String name,
+                     FlavorStatus status,
+                     String description) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
         this.description = description;
     }
 
@@ -64,7 +75,6 @@ public class FlavorDTO {
     public static FlavorDTO fromEntity(Flavor flavor) {
         FlavorDTO dto = new FlavorDTO();
         dto.setId(flavor.getId());
-        dto.setFlavorName(flavor.getFlavorName());
         dto.setDescription(flavor.getDescription());
         dto.setStatus(flavor.getStatus());
         dto.setUnitPrice(flavor.getUnitPrice());
@@ -77,9 +87,6 @@ public class FlavorDTO {
     private void setDescription(String description) {
     this.description = description;}
 
-    private void setFlavorName(String flavorName) {
-        this.name = flavorName;
-    }
 
     public FlavorStatus getStatus() {
         return status;
@@ -88,9 +95,7 @@ public class FlavorDTO {
     public String getDescription() {
         return description;
     }
-    public String getFlavorName() {
-        return name;
-    }
+
 
     public void setFlavor(Flavor flavor) {
         this.name = flavor.getFlavorName();

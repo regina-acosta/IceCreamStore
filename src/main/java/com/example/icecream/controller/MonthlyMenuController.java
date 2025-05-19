@@ -3,6 +3,7 @@ package com.example.icecream.controller;
 import com.example.icecream.dto.MenuItemDTO;
 import com.example.icecream.model.MenuItem;
 import com.example.icecream.service.MenuItemService;
+import jakarta.persistence.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

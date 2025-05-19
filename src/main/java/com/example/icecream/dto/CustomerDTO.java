@@ -18,6 +18,10 @@ public class CustomerDTO {
         this.phoneNumber = phoneNumber;
     }
 
+    public CustomerDTO(UUID id) {
+        this.id = id;
+    }
+
     // Getters and Setters
     public UUID getId() {
         return id;

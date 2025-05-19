@@ -30,13 +30,14 @@ public class VoteService {
         this.customerService = customerService;
         this.flavorService = flavorService;
     }
+    private final static int VOTE_LIMIT = 5;
 
     public Vote saveVote(VoteDTO voteDTO) {
         int voteMonth = LocalDate.now().getMonthValue();
         int voteYear = LocalDate.now().getYear();
         int voteCount = getVoteCountByCustomerIdAndMonthAndYear(voteDTO.getCustomerId(), voteMonth, voteYear);
 
-        if (voteCount >= 5) {
+        if (voteCount >= VOTE_LIMIT) {
             throw new IllegalArgumentException("Customer has already voted " + voteCount + " times this month.");
         }
 

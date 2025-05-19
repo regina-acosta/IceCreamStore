@@ -9,17 +9,17 @@ public class PurchaseDTO {
     private UUID id;
     private LocalDateTime createdAt;
     private Double totalPrice;
-    private CustomerDTO customerDTO;
+    private UUID customerId;
     private List<PurchaseItemDTO> purchaseItems;
 
     // Constructors
     public PurchaseDTO() {}
 
-    public PurchaseDTO(UUID id, LocalDateTime createdAt, Double totalPrice, CustomerDTO customerDTO, List<PurchaseItemDTO> purchaseItems) {
+    public PurchaseDTO(UUID id, LocalDateTime createdAt, Double totalPrice, UUID customerId, List<PurchaseItemDTO> purchaseItems) {
         this.id = id;
         this.createdAt = createdAt;
         this.totalPrice = totalPrice;
-        this.customerDTO = customerDTO;
+        this.customerId = customerId;
         this.purchaseItems = purchaseItems;
     }
 
@@ -48,12 +48,12 @@ public class PurchaseDTO {
         this.totalPrice = totalPrice;
     }
 
-    public CustomerDTO getCustomerId() {
-        return customerDTO;
+    public UUID getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerId(CustomerDTO customerDTO) {
-        this.customerDTO = customerDTO;
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
     }
 
     public List<PurchaseItemDTO> getPurchaseItems() {
@@ -70,7 +70,7 @@ public class PurchaseDTO {
                 "id=" + id +
                 ", createdAt=" + createdAt +
                 ", totalPrice=" + totalPrice +
-                ", CustomerDTO=" + customerDTO +
+                ", customerId=" + customerId +
                 ", purchaseItems=" + purchaseItems +
                 '}';
     }
