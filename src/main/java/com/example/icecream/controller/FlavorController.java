@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/flavors")
+@RequestMapping("/api/v1/flavors")
 public class FlavorController {
 
     private final FlavorService flavorService;

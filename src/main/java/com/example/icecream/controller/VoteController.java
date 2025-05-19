@@ -19,7 +19,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/votes")
+@RequestMapping("/api/v1/votes")
 public class VoteController {
 
     private final VoteService voteService;

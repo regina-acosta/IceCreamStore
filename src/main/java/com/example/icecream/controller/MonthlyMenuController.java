@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/monthly-menu")
+@RequestMapping("/api/v1/monthly-menu")
 public class MonthlyMenuController {
 
     private final MenuItemService monthlyMenuItemService;

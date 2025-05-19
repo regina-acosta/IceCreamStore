@@ -18,7 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/menu-item")
+@RequestMapping("/api/v1/menu-item")
 public class MenuItemController {
 
     private final MenuItemService monthlyMenuItemService;

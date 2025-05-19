@@ -19,7 +19,7 @@ import static com.example.icecream.util.PurchaseUtil.getPurchaseDTO;
 import static com.example.icecream.util.PurchaseUtil.getPurchaseDTOList;
 
 @RestController
-@RequestMapping("/api/purchases")
+@RequestMapping("/api/v1/purchases")
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
