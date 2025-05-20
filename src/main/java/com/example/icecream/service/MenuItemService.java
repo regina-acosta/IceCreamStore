@@ -102,7 +102,7 @@ public class MenuItemService {
                 .collect(Collectors.toList());
 
         // Create MonthlyMenuItem objects for the top 25 flavors of the month
-        List<MenuItemDTO> monthlyMenuItems = new ArrayList<>(125);
+        List<MenuItemDTO> monthlyMenuItems = new ArrayList<>(25);
         System.out.println("Top 25 Flavors: " + top5Flavors.size());
 
         for (Map.Entry<UUID, Double> entry : top5Flavors) {
@@ -132,6 +132,7 @@ public class MenuItemService {
         // get the last month's menu items
         List<MenuItem> lastMonthMenuItems = getMenuItemsByMonthAndYear(now.getMonthValue() - 1, now.getYear());
         System.out.println("lastMonthMenuItems: " + lastMonthMenuItems.size());
+
         // get all the flavors
         List<Flavor> allFlavors = flavorRepository.findAll();
         System.out.println("allFlavors: " + allFlavors.size());
@@ -155,10 +156,15 @@ public class MenuItemService {
                 .collect(Collectors.toList());
         System.out.println("filteredFlavors without last month's menu items: " + filteredFlavors.size());
 
-        // generate additional 20 items that aren't the top 5 flavors
+        if (filteredFlavors.size() < 20) {
+            throw new IllegalStateException("Not enough flavors to generate 20 menu items");
+        }
+        // generate an additional 20 items that aren't the top 5 flavors
+        // or flavors from the last month's menu
+        Random random = new Random();
         for (int i = 0; i < 20; i++) {
-            // get a random item from the last month's menu items
-            Random random = new Random();
+            // get a random item from remaining flavors
+
             int randomIndex = random.nextInt(filteredFlavors.size());
 
             // find the flavor
@@ -170,7 +176,7 @@ public class MenuItemService {
             newItem.setMonth(now.getMonthValue());
             newItem.setYear(now.getYear());
             newItem.setUnitPrice(unusedFlavor.getUnitPrice());
-            newItem.setRankScore(0.0);   // new item, not yet voted
+            newItem.setRankScore(0.0);   // start fresh each month for new items
 
             // Save the MonthlyMenuItem entity
             MenuItem savedNewItem = saveMenuItem(newItem);

@@ -10,6 +10,7 @@ CREATE TABLE flavor (
                           id UUID PRIMARY KEY,
                           flavor_name VARCHAR(100) NOT NULL UNIQUE,
                           description TEXT,
+                          unit_price DECIMAL(5,2) NOT NULL,
                           status VARCHAR(20) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE')),
                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -33,13 +34,13 @@ CREATE TABLE purchase_item (
                                CONSTRAINT fk_flavor_purchase_item FOREIGN KEY (flavor_id) REFERENCES flavor(id)
 );
 
-Create TABLE monthly_menu_item (
+Create TABLE menu_item (
                           id UUID PRIMARY KEY,
                           menu_month INT NOT NULL CHECK (menu_month BETWEEN 1 AND 12),
                           menu_year INT NOT NULL,
                           flavor_id UUID NOT NULL,
                           unit_price DECIMAL(5, 2) NOT NULL,
-                          rank_score INT NOT NULL,
+                          rank_score DECIMAL(5, 2) NOT NULL,
                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           CONSTRAINT fk_flavor_monthly_menu FOREIGN KEY (flavor_id) REFERENCES flavor(id),
                         -- Prevent duplicates for same flavor in the same month

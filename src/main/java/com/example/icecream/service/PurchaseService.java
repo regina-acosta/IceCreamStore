@@ -74,7 +74,7 @@ public class PurchaseService {
             PurchaseItem item = new PurchaseItem();
             item.setFlavor(flavor);
             item.setQuantity(itemRequest.getQuantity());
-            item.setUnitPrice(itemRequest.getUnitPrice());
+            item.setUnitPrice(flavor.getUnitPrice());
             total += item.getQuantity() * flavor.getUnitPrice();
 
             items.add(item);
