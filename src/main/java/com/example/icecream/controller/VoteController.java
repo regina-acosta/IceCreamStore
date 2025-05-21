@@ -92,6 +92,7 @@ public class VoteController {
         dto.setFlavorId(vote.getFlavor().getId());
         dto.setYear(vote.getVoteYear());
         dto.setMonth(vote.getVoteMonth());
+        dto.setCreatedAt(vote.getCreatedAt());
         return dto;
     }
 }

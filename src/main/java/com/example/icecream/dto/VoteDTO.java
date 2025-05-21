@@ -1,5 +1,6 @@
 package com.example.icecream.dto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class VoteDTO {
@@ -9,10 +10,12 @@ public class VoteDTO {
     private UUID flavorId; // assuming votes are on menu items
     private int month;
     private int year;
+    private LocalDateTime createdAt;
+
 
     public VoteDTO() {}
 
-    public VoteDTO(UUID id, UUID customerId, UUID flavorId, int month, int year) {
+    public VoteDTO(UUID id, UUID customerId, UUID flavorId, int month, int year, LocalDateTime createdAt) {
         this.id = id;
         this.customerId = customerId;
         this.flavorId = flavorId;
@@ -56,4 +59,11 @@ public class VoteDTO {
         this.year = year;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
